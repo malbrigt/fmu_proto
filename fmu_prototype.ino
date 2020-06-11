@@ -327,8 +327,15 @@ void buttonpress_rise() {
 
   } else {
     // Normal operation, rise stepper to selected can size
-    stepper_rise();
+    
+    stepper_rise(); // if autoEnabled stepper_rise() will purge before sealed
+
+    if(autoEnabled) {
+      purge_start();
+    }
+    
   }
+  
 
   screen_update();  
 }
@@ -437,10 +444,19 @@ void buttonpress_prge() {
   // Pressure test, if fails complain and abort
   if(state_isPurging) {
     // Stop
+    purge_stop();
+  } else {
+    purge_start();
+  }
+}
+
+void purge_stop() {
     digitalWrite(PIN_VALVE_RELIEF, LOW);
     digitalWrite(PIN_VALVE_GAS, LOW);
     state_isPurging = state_isPurged = false;
-  } else {
+}
+
+void purge_start() {
     state_isPurging = true;
 
 /*
@@ -472,9 +488,7 @@ void buttonpress_prge() {
 
     state_isPurging = false;
     state_isPurged = true;
-  }
 }
-
 
 
 void buttonpress_fill() {

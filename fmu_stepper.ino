@@ -90,7 +90,6 @@ void stepper_home() {
 
 
 
-
 //
 // stepper_rise()
 //
@@ -125,15 +124,16 @@ void stepper_rise() {
   stepper.moveTo(purgepos);
   stepper.runToPosition();
 
+  stepper.setMaxSpeed(500.0);     // Slower you slut
+  stepper.setAcceleration(500.0);
+
   if(autoEnabled) {
-    // Purge...
+    // Purge before seal is made
     state_isPurging = true;
     digitalWrite(PIN_VALVE_GAS, HIGH);
   }
 
-  stepper.setMaxSpeed(500.0);     // Slower you slut
-  stepper.setAcceleration(500.0);
-
+  
   stepper.moveTo(target_pos);
   stepper.runToPosition();
   
