@@ -2,10 +2,6 @@
 #include <AccelStepper.h>
 #include <EEPROM.h>
 
-
-//#define PIN_SERIAL_RX 0 - Included to remind why we start at pin 2
-//#define PIN_SERIAL_TX 1 - Included to remind why we start at pin 2
-
 #define PIN_STEPPER_DIR 2
 #define PIN_STEPPER_STP 3
 #define PIN_STEPPER_LIMIT_HOME 4
@@ -29,8 +25,8 @@
 #define EEPROM_SETTINGS_STARTADR 1
 #define EEPROM_SETTINGS_ENDADR 12
 
-#define EEPROM_POS_ID 0    // byte value to let us know if board is initialized for fillmeup (eeprom for tuning values are relevant and/or cleared)
-                             // Should read 42x4 = 168 on initialized boards.
+#define EEPROM_POS_ID 0    // byte value to let us know if board is initialized for fmu (eeprom for tuning values are relevant and/or cleared)
+                             // Should read EEPROM_VER on initialized boards.
 #define EEPROM_POS_TV330 1 // -5
 #define EEPROM_POS_TV440 5 // -8
 #define EEPROM_POS_TV500 9 // -12
@@ -101,6 +97,7 @@ int lastbuttonstate_size = LOW;
 int lastbuttonstate_prge = LOW;
 int lastbuttonstate_fill = LOW;
 
+bool autoEnabled = true;
 
 void setup() {
   

@@ -100,8 +100,6 @@ void stepper_rise() {
 
   Serial.println("stepper_rise()");
 
-
-
   state_isStepperRising = true;
   state_isStepperHome = state_isStepperHoming = false;
 
@@ -127,13 +125,23 @@ void stepper_rise() {
   stepper.moveTo(purgepos);
   stepper.runToPosition();
 
- 
+  if(autoEnabled) {
+    // Purge...
+    state_isPurging = true;
+    digitalWrite(PIN_VALVE_GAS, HIGH);
+  }
+
   stepper.setMaxSpeed(500.0);     // Slower you slut
   stepper.setAcceleration(500.0);
 
   stepper.moveTo(target_pos);
   stepper.runToPosition();
   
+  if(autoEnabled) {
+    digitalWrite(PIN_VALVE_GAS, LOW);
+    state_isPurging = false;
+  }
+
   state_isStepperRising = false;
   state_isStepperRised = true;
   
